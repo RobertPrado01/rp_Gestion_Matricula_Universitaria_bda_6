@@ -1,5 +1,7 @@
 # rp_Gestion_Matricula_Universitaria_bda_6
+
 ##autor: Prado Acuña Robert Anthony
+
 ##Caso Propuesto: Gestión de Matrícula Universitaria
 La Universidad XYZ necesita un sistema para gestionar la matrícula de sus estudiantes en diversas carreras y materias. Este sistema debe registrar información sobre estudiantes, profesores, materias, programas académicos y períodos académicos. Además, se espera que el sistema facilite la asignación de calificaciones y permita generar reportes de desempeño por estudiante y curso.
 
