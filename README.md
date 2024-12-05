@@ -37,3 +37,8 @@ Los estudiantes pueden recibir una calificación final por materia matriculada.
 
 ## Modelo Conceptual Entidad_Relación_BDA_6
 ![Modelo_conceptual_E_R_BDA_6](https://github.com/user-attachments/assets/42e0d5ac-3b1c-4e84-8db2-206eff9d9142)
+
+## Modelo Logico 
+https://dbdesigner.page.link/ohci7wdtS3GePLg4A
+![image](https://github.com/user-attachments/assets/f94518cb-31f3-4b3d-8730-8dc7cf998ba9)
+
