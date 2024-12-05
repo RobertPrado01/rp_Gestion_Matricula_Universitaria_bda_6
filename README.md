@@ -40,5 +40,5 @@ Los estudiantes pueden recibir una calificación final por materia matriculada.
 
 ## Modelo Logico 
 https://dbdesigner.page.link/ohci7wdtS3GePLg4A
-![image](https://github.com/user-attachments/assets/f94518cb-31f3-4b3d-8730-8dc7cf998ba9)
+![image](https://github.com/user-attachments/assets/97d7ee76-3608-486c-85ac-65490b518feb)
 
