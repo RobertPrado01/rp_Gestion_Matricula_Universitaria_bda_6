@@ -1,0 +1,74 @@
+USE rp_Gestion_Matricula_Universitaria_bda_6
+GO
+
+-- Tabla : Estudiantes
+CREATE TABLE estudiantes (
+   id_estudiante INT PRIMARY KEY IDENTITY (1,1),
+   codigo_estudiante VARCHAR (30) UNIQUE NOT NULL, 
+   nombres VARCHAR (50) NOT NULL,
+   apellido_paterno VARCHAR (255) NOT NULL,
+   apellido_materno VARCHAR (255) NOT NULL,
+   fecha_nacimiento DATE NOT NULL,
+   email VARCHAR (100) UNIQUE NOT NULL,
+   telefono VARCHAR (20) NOT NULL,
+   direccion VARCHAR (255) NOT NULL,
+   carrera_inscrita VARCHAR (255) NOT NULL,
+   FOREIGN KEY (id_carrera) REFERENCES carreras(id_carrera),
+);
+
+-- Tabla : Profesores 
+CREATE TABLE profesores (
+   id_profesor INT PRIMARY KEY IDENTITY (1,1),
+   nombre VARCHAR (50) NOT NULL,
+   apellido_paterno VARCHAR (255) NOT NULL,
+   apellido_materno VARCHAR (255) NOT NULL,
+   email VARCHAR (100) UNIQUE NOT NULL, 
+   telefono VARCHAR (20) NOT NULL,
+   especialidad VARCHAR(100) NOT NULL,
+);
+
+-- Tabla : Carreras
+CREATE TABLE carreras (
+   id_carrera INT PRIMARY KEY IDENTITY (1,1),
+   nombre VARCHAR (100) NOT NULL,
+);
+
+-- Tabla : Materias
+CREATE TABLE materias (
+   id_materia INT PRIMARY KEY IDENTITY (1,1),
+   nombre VARCHAR (100) NOT NULL,
+   creditos INT NOT NULL,
+   descripcion TEXT,
+   id_carrera INT,
+   FOREIGN KEY (id_carrera) REFERENCES carreras(id_carrera),
+);
+
+-- Tabla : Periodo academico 
+CREATE TABLE periodos_academicos (
+   id_periodo_academico INT PRIMARY KEY IDENTITY (1,1),
+   fecha_inicio DATE NOT NULL,
+   fecha_fin DATE NOT NULL,
+); 
+
+-- Tabla : Matricula
+CREATE TABLE matricula (
+   id_matricula INT PRIMARY KEY IDENTITY (1,1),
+   id_estudiante INT, 
+   id_materia INT,
+   id_periodo_academico INT,
+   fecha_matricula DATE NOT NULL,
+   FOREIGN KEY (id_estudiante) REFERENCES estudiantes(id_estudiante),
+   FOREIGN KEY (id_materia) REFERENCES materias(id_materia),
+   FOREIGN KEY (id_periodo_academico) REFERENCES periodos_academicos(id_periodo_academico),
+);
+
+-- Tabla : Profesores-Materias 
+CREATE TABLE profesores_materias (
+id_profesor INT,
+id_materia INT, 
+PRIMARY KEY (id_profesor, id_materia),
+FOREIGN KEY (id_profesor) REFERENCES profesores (id_profesor),
+FOREIGN KEY (id_materia) REFERENCES materias (id_materia),
+);
+
+GO
