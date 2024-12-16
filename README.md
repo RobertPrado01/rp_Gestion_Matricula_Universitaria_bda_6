@@ -42,3 +42,7 @@ Los estudiantes pueden recibir una calificación final por materia matriculada.
 https://dbdesigner.page.link/ohci7wdtS3GePLg4A
 ![image](https://github.com/user-attachments/assets/97d7ee76-3608-486c-85ac-65490b518feb)
 
+## Modelo Logico - correccion
+https://erd.dbdesigner.net/designer/schema/1733431464-rp_gestion_matricula_universitaria_bda_6
+![image](https://github.com/user-attachments/assets/7647d615-a65e-476d-991c-9ec4e743b0ef)
+
