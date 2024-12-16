@@ -1,0 +1,96 @@
+USE rp_Gestion_Matricula_rp;
+GO 
+
+-- Tabla : Escuela Profesional 
+CREATE TABLE EscuelaProfesional (
+   escuelaprofesional_id INT PRIMARY KEY IDENTITY (1,1),
+   codigoescuelaprofesional VARCHAR (50) UNIQUE NOT NULL,
+   nombre VARCHAR (100) NOT NULL,
+   direccion VARCHAR (255) NOT NULL,
+);
+
+-- Tabla : Curricula 
+CREATE TABLE Curricula (
+   curricula_id INT PRIMARY KEY IDENTITY (1,1),
+   nombre VARCHAR (100) NOT NULL,
+   descripcion TEXT  NOT NULL,
+   escuelaprofesional_id INT NOT NULL FOREIGN KEY (escuelaprofesional_id) REFERENCES EscuelaProfesional(escuelaprofesional_id),
+);
+
+-- Tabla : Tipo de Matricula
+CREATE TABLE TipodeMatricula (
+   tipodematricula_id INT PRIMARY KEY IDENTITY (1,1),
+   nombre VARCHAR (100) NOT NULL,
+   descripcion TEXT  NOT NULL,
+);
+
+-- Tabla : Estudiantes
+CREATE TABLE Estudiantes (
+   estudiante_id INT PRIMARY KEY IDENTITY (1,1),
+   codigo_estudiante VARCHAR (30) UNIQUE NOT NULL, 
+   nombres VARCHAR (50) NOT NULL,
+   apellido_paterno VARCHAR (255) NOT NULL,
+   apellido_materno VARCHAR (255) NOT NULL,
+   fecha_nacimiento DATE NOT NULL,
+   email VARCHAR (100) UNIQUE NOT NULL,
+   telefono VARCHAR (20) NOT NULL,
+   direccion VARCHAR (255) NOT NULL,
+   carrera_inscrita VARCHAR (255) NOT NULL,
+   curricula_id INT NOT NULL FOREIGN KEY (curricula_id) REFERENCES Curricula (curricula_id),
+);
+
+-- Tabla : Profesores 
+CREATE TABLE Profesores (
+   profesor_id INT PRIMARY KEY IDENTITY (1,1),
+   codigo_profesor VARCHAR (30) UNIQUE NOT NULL,
+   nombre VARCHAR (50) NOT NULL,
+   apellido_paterno VARCHAR (255) NOT NULL,
+   apellido_materno VARCHAR (255) NOT NULL,
+   email VARCHAR (100) UNIQUE NOT NULL, 
+   telefono VARCHAR (20) NOT NULL,
+   especialidad VARCHAR(100) NOT NULL,
+);
+
+-- Tabla : Materias
+CREATE TABLE Materias (
+   materia_id INT PRIMARY KEY IDENTITY (1,1),
+   codigo_materia VARCHAR (30) UNIQUE NOT NULL,
+   nombre VARCHAR (100) NOT NULL,
+   creditos INT NOT NULL,
+   descripcion TEXT,
+   profesor_id INT NOT NULL FOREIGN KEY (profesor_id) REFERENCES Profesores(profesor_id),
+);
+
+-- Tabla : Periodo Academico 
+CREATE TABLE PeriodosAcademicos (
+   periodoacademico_id INT PRIMARY KEY IDENTITY (1,1),
+   nombre VARCHAR (100) NOT NULL,
+   fecha_inicio DATE NOT NULL,
+   fecha_fin DATE NOT NULL,
+   materia_id INT NOT NULL FOREIGN KEY (materia_id) REFERENCES Materias (materia_id),
+); 
+
+-- Tabla : Matricula
+CREATE TABLE Matricula (
+   matricula_id INT PRIMARY KEY IDENTITY (1,1),
+   fecha_inicio DATE NOT NULL,
+   fecha_fin DATE NOT NULL,
+   created_at DATETIME,
+   update_at DATETIME,
+   deleted_at DATETIME,
+   created_by INTEGER,
+   update_by INTEGER,
+   deleted_by INTEGER,
+   estudiante_id INT NOT NULL FOREIGN KEY (estudiante_id) REFERENCES Estudiantes (estudiante_id),
+   periodoacademico_id INT NOT NULL FOREIGN KEY (periodoacademico_id) REFERENCES PeriodosAcademicos (periodoacademico_id),
+   tipodematricula_id INT NOT NULL FOREIGN KEY (tipodematricula_id) REFERENCES TipodeMatricula (tipodematricula_id),
+);
+
+-- Tabla : Profesores-Materias 
+CREATE TABLE ProfesoresMaterias (
+   profesormateria_id INT PRIMARY KEY IDENTITY (1,1),
+   profesor_id INT NOT NULL FOREIGN KEY (profesor_id) REFERENCES Profesores (profesor_id),
+   materia_id INT NOT NULL FOREIGN KEY (materia_id) REFERENCES Materias (materia_id),
+);
+
+GO
