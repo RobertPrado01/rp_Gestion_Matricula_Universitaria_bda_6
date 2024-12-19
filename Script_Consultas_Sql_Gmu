@@ -1,0 +1,114 @@
+USE rp_Gestion_Matricula_rp;
+GO 
+
+-- CONSULTAS SQL 
+
+-- 1° CONSULTA, TODAS LAS ESCUELAS PROFESIONALES CON SUS NOMBRES Y DIRECCIONES ORDENADOS ALFABETICAMENTE.
+
+SELECT codigoescuelaprofesional, nombre, direccion
+FROM EscuelaProfesional
+ORDER BY nombre;
+
+-- 2° CONSULTA, OBTEN EL LISTADO DE ESTUDIANTES JUNTO CON EL NOMBRE DE LA CURRICULA A LA QUE ESTAN INSCRITOS.
+
+SELECT 
+    E.codigo_estudiante, 
+    CONCAT(E.nombres, ' ', E.apellido_paterno,' ', E.apellido_materno) AS 'Nombre completo', 
+    C.nombre AS curricula_nombre
+FROM Estudiantes E
+INNER JOIN Curricula C ON E.curricula_id = C.curricula_id;
+
+-- 3° CONSULTA, MUESTRA EL LISTADO DE PROFESORES Y LAS MATERIAS QUE DICTAN, INCLUYENDO SUS CREDITOS.
+
+SELECT 
+    CONCAT(P.nombre,' ',P.apellido_paterno,' ',P.apellido_materno) AS 'Profesor nombre completo', 
+    P.especialidad, 
+    M.nombre AS 'materia', 
+    M.creditos
+FROM Profesores P
+INNER JOIN Materias M ON P.profesor_id = M.profesor_id;
+
+-- 4° CONSULTA, OBTEN EL NOMBRE COMPLETO DE LOS ESTUDIANTES Y LAS FECHAS DE MATRICULA DEL PERIODO ACADEMICO ACTUAL.
+
+SELECT 
+    CONCAT(E.nombres, ' ', E.apellido_paterno,' ', E.apellido_materno) AS 'Nombre completo',
+    M.fecha_inicio, 
+    M.fecha_fin
+FROM Estudiantes E
+INNER JOIN Matricula M ON E.estudiante_id = M.estudiante_id
+INNER JOIN PeriodosAcademicos PA ON M.periodoacademico_id = PA.periodoacademico_id;
+
+-- 5° CONSULTA, MUESTRA LAS MATERIAS QUE SE DICTAN EN EL PERIODO ACADEMICO ACTUAL CON SUS FECHAS DE INICIO Y FIN.
+
+SELECT 
+    PA.nombre AS 'Periodo Academico', 
+    M.nombre AS 'Materia', 
+    PA.fecha_inicio, 
+    PA.fecha_fin
+FROM PeriodosAcademicos PA
+INNER JOIN Materias M ON PA.materia_id = M.materia_id;
+
+-- 6° CONSULTA, CAMBIA EL NUMERO DE CREDITOS DE LA MATERIA "CALCULO DIFERENCIAL" A 6.
+
+UPDATE Materias
+SET creditos = 6
+WHERE nombre = 'Cálculo Diferencial';
+
+-- 7° CONSULTA, OBTENER EL NUMERO TOTAL DE ESTUDIANTES POR CADA CURRICULA.
+
+SELECT 
+    C.nombre AS 'Curricula', 
+    COUNT(E.estudiante_id) AS 'Total estudiantes'
+FROM Curricula C
+LEFT JOIN Estudiantes E ON C.curricula_id = E.curricula_id
+GROUP BY C.nombre;
+
+-- 8° CONSULTA,	OBTEN EL LISTADO DE ESTUDIANTES QUE AUN NO TIENEN MATRICULA REGISTRADA. 
+
+SELECT 
+    E.estudiante_id, 
+    CONCAT(E.nombres, ' ', E.apellido_paterno,' ', E.apellido_materno) AS 'Nombre completo'
+FROM Estudiantes E
+LEFT JOIN Matricula M ON E.estudiante_id = M.estudiante_id
+WHERE M.matricula_id IS NULL;
+
+-- 9° CONSULTA, MUESTRA EL ESTUDIANTE JUNTO CON EL TOTAL DE CREDITOS DE LAS MATERIAS QUE ESTAN MATRICULADOS.
+
+SELECT 
+    CONCAT(E.nombres, ' ', E.apellido_paterno,' ', E.apellido_materno) AS 'Nombre completo',
+    SUM(M.creditos) AS 'Total creditos'
+FROM Estudiantes E
+JOIN Matricula MA ON E.estudiante_id = MA.estudiante_id
+JOIN PeriodosAcademicos PA ON MA.periodoacademico_id = PA.periodoacademico_id
+JOIN Materias M ON PA.materia_id = M.materia_id
+GROUP BY E.estudiante_id, E.nombres, E.apellido_paterno, E.apellido_materno;
+
+-- 10° CONSULTA, ENCUENTRA AL PROFESOR CON MAS MATERIAS ASIGNADAS Y MUESTRA SU NOMBRE COMPLETO JUNTO CON EL NUMERO DE MATERIAS.
+
+SELECT TOP 1
+    CONCAT(P.nombre,' ',P.apellido_paterno,' ',P.apellido_materno) AS 'Profesor nombre completo', 
+    COUNT(M.materia_id) AS 'Total materias'
+FROM Profesores P
+INNER JOIN Materias M ON P.profesor_id = M.profesor_id
+GROUP BY P.profesor_id, P.nombre, P.apellido_paterno, P.apellido_materno
+ORDER BY 'Total materias' DESC;
+
+-- 11° CONSULTA, LISTA EL NOMBRE DE LOS ESTUDIANTES JUNTO CON LAS MATERIAS QUE ESTAN CURSANDO ACTUALMENTE.
+
+SELECT 
+    CONCAT(E.nombres, ' ', E.apellido_paterno,' ', E.apellido_materno) AS 'Nombre completo',
+    M.nombre AS 'Materia'
+FROM Estudiantes E
+INNER JOIN Matricula MA ON E.estudiante_id = MA.estudiante_id
+INNER JOIN PeriodosAcademicos PA ON MA.periodoacademico_id = PA.periodoacademico_id
+INNER JOIN Materias M ON PA.materia_id = M.materia_id
+WHERE GETDATE() BETWEEN PA.fecha_inicio AND PA.fecha_fin;
+
+
+
+
+
+
+
+
+
